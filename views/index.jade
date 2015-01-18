@@ -1,0 +1,117 @@
+extends layout
+
+block content
+  .panel.panel-default(style="width:600px; margin-top:100px; margin-right:auto; margin-left:auto")
+    .panel-body
+      span(style="width:600px; margin-left:auto; margin-right:auto")
+        img(src="/images/logo.png" style="height:100%; width:100%;")
+      img#startBtn(src="/images/start.png", style="width:100%; height:100%")
+      img#stopBtn(src="images/stop.png", style="width:100%; height:100%")
+
+      br
+      br
+
+      button#scheduleBtn.btn.btn-primary.btn-lg.btn-block
+        | Schedule
+      button#hideBtn.btn.btn-primary.btn-lg.btn-block
+        | Hide
+
+  .container-fluid
+    .row
+      .col-sm-2.col-lg-4
+
+      div#scheduleBody.col-xs-12.col-sm-8.col-lg-4
+        .container-fluid
+          .row
+            .col-md-6(style="height:400px; margin-bottom:50px")
+              .panel.panel-default(style="height:100%")
+                .panel-heading
+                  h3 Plan Ahead
+                .panel-body
+                  form(action="/coffee/instruction/create/schedule", method="post")
+                    label(for="datepickerDate")
+                      | Date
+                    .input-group
+                      input#datepickerDate.form-control(type="text", name="datepickerDate")
+                    span.help-block
+                      | format mm-dd-yyyy
+
+                    label(for="timepicker")
+                      | Time
+                    .input-group.bootstrap-timepicker
+                      input#timepicker.form-control(type="text", name="timepicker")
+                    span.help-block
+                      | format hh:mm:ss
+
+                    input(type="submit", value="Schedule")
+
+            .col-md-6(style="height:400px; margin-bottom:50px")
+              .panel.panel-default(style="height:100%")
+                .panel-heading
+                  h3 Scheduled Times
+                .panel-body
+                  table.table#scheduleList
+                    th Day
+                    th Time
+
+      .col-sm-2.col-lg-4
+
+block js
+  script.
+    $(document).ready(function() {
+      // add onclicks
+      $("#startBtn").click(function() {
+        $.ajax({
+          type: "post",
+          url: "/coffee/instruction/create/now",
+        }).done(function() {
+          $("#startBtn").toggle();
+          $("#stopBtn").toggle();
+        });
+      });
+
+      $("#stopBtn").click(function() {
+        $.ajax({
+          type: "post",
+          url: "/coffee/instruction/create/now",
+        }).done(function() {
+          $("#stopBtn").toggle();
+          $("#startBtn").toggle();
+        });
+      });
+
+      $("#scheduleBtn").click(function() {
+        $("#scheduleBtn").toggle();
+        $("#hideBtn").toggle();
+        $("#scheduleBody").toggle();
+      });
+
+      $("#hideBtn").click(function() {
+        $("#hideBtn").toggle();
+        $("#scheduleBtn").toggle();
+        $("#scheduleBody").toggle();
+      });
+
+      // set javascript defaults
+      $("#advancedBody").hide();
+      $("#stopBtn").hide();
+      $("#hideBtn").hide();
+      $("#scheduleBody").hide();
+
+      var obj = !{schedule};
+      var instruction, element, timeUTC;
+      var day, time;
+      var more = #{more};
+
+      for(var i=0; i < obj.length; i++) {
+        instruction = obj[i];
+        timeUTC = instruction.time;
+        timeUTC = timeUTC.slice(0,19);
+        timeArr = timeUTC.split("T");
+        day = timeArr[0];
+        time = timeArr[1];
+        element = "<tr><td>" + day + "</td><td>" + time + "</td></tr>";
+        $("#scheduleList").append(element);
+      }
+      if(#{more}) $("#scheduleList").append("<tr><td>...</td><td></td></tr>");
+    });

@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+  h1= title
+  p All Instructions [#{num_instructions} total]
+  ul
+    each val in all_instructions
+      -var obj = val
+      li= obj
+
+  hr
+
+  p All Info
+  ul
+    each val in all_info
+      -var obj = val
+      li= obj
+
+  hr
+
+  p Create Instruction
+  form(action="/dev/instruction/create_test", method="post")
+    input(type="submit")
+
+  hr
+
+  p Create Info
+  form(action="/dev/info/create_test", method="post")
+    input(type="submit")
+
+block js
+  script.
+    time = new Date;
+    time = time.getTime();
+    console.log("current time: " + time);
+
+    var instructionsArr = !{all_instructions};
+    console.log("Arr: " + instructionsArr);

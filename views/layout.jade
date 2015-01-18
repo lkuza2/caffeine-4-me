@@ -1,0 +1,20 @@
+doctype html
+html(style="background-image:url('/images/green_pattern.png')")
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/libs/bootstrap-timepicker.css', type='text/css')
+
+    // Google fonts library
+    link(href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400', rel='stylesheet', type='text/css')
+
+  body(style="margin:0px; padding:0px; background-image:url('/images/green_pattern.png')")
+    block content
+
+    script(src="//code.jquery.com/jquery-1.11.2.min.js")
+    script(src="/javascripts/index.js")
+    script(src="/javascripts/jquery-ui.custom.min.js")
+    script(src="/javascripts/bootstrap-datepicker.js")
+    script(src="/javascripts/bootstrap-timepicker.min.js")
+    block js
