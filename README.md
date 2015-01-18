@@ -1,2 +1,2 @@
 # who-wants-coffee
-Automated Coffee Machine
+Automated Coffee Machine for MHacks V
